@@ -51,24 +51,26 @@ const FormattedAscii = ({ style, children}: FormattedAsciiProps) => {
       const b = children.slice(g_end, children.length);
 
       formatted = (
-        <div className='flex'>
-          <div>
-            <pre style={{ color: 'rgb(255, 0, 0)' }}>
-              {r}
-            </pre>
-          </div>
+        <div className='bg-black'>
+          <pre className="text-white">
+            {r}
+          </pre>
+          <pre className="absolute top-0 left-0 mix-blend-overlay" style={{ color: 'rgba(0, 0, 255, 0.5)' }}>
+            {b}
+          </pre>
+          <pre className="absolute top-0 left-0 mix-blend-overlay" style={{ color: 'rgba(0, 255, 0, 0.5)' }}>
+            {g}
+          </pre>
+          <pre className="absolute top-0 left-0 mix-blend-overlay" style={{ color: 'rgba(255, 0, 0, 0.5)' }}>
+            {r}
+          </pre>
         </div>
       );
-      break
+      return <>{formatted}</>;
 
     default:
       formatted = "invalid type"
       break
-  }
-
-
-  if (style === "rgb") {
-    return <>{formatted}</>;
   }
 
   return (
