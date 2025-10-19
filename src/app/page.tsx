@@ -36,7 +36,7 @@ export default function Home() {
         <div className="w-[80%]">
           <div className="flex justify-center pb-10">
             <div className="flex w-full max-w-sm items-center gap-2">
-              <Input placeholder="ASCII Image Prompt..." onChange={(e) => prompt = e.target.value}/>
+              <Input placeholder="Enter a prompt..." onChange={(e) => prompt = e.target.value}/>
               <Button type="button" variant="outline" onClick={() => generate()}>
                 Generate
               </Button>

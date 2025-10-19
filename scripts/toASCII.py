@@ -109,7 +109,7 @@ def multilayered(imagePath):
 
             red = col_matching(r)
             green = col_matching(g)
-            blue = col_matching(g)
+            blue = col_matching(b)
             red_grid += (f"\033[38;2;{255};{0};{0}m{red}\033[0m")
             green_grid += (f"\033[38;2;{0};{255};{0}m{green}\033[0m")
             blue_grid += (f"\033[38;2;{0};{0};{255}m{blue}\033[0m")
