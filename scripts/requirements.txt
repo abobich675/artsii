@@ -1,0 +1,7 @@
+dotenv
+Flask
+flask-cors
+google-auth
+google-genai
+numpy
+pillow

@@ -3,7 +3,6 @@ import random
 import sys
 from toASCII import create_ascii
 from dotenv import load_dotenv
-from PIL import Image
 import os
 import json
 
