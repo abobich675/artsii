@@ -3,6 +3,7 @@ import random
 import sys
 from toASCII import create_ascii
 from dotenv import load_dotenv
+from PIL import Image
 import os
 
 load_dotenv()
@@ -23,6 +24,11 @@ def generate_image(prompt: str):
     path = f"generated_images/{random.randint(0, sys.maxsize)}.png"
     for generated_image in response.generated_images:
         generated_image.image.save(path)
+
+    # img = Image.open(path)
+    # img.thumbnail((200, 200))  
+    # img.save(path)
+
     return path
 
 def generate_ascii(imagePath, style):
