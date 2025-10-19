@@ -5,10 +5,11 @@ from generateASCII import run
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/api/endpoint', methods=['POST'])
+@app.route('/api/generate-image', methods=['POST'])
 def handle_data():
     data = request.json
-    result = run(data)
+    prompt = data.get("message")
+    result = run(prompt)
     return jsonify({"result": f"{result}"})
 
 

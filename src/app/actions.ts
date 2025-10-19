@@ -1,18 +1,11 @@
 'use server'
-import { GoogleGenAI } from "@google/genai";
-import Image from "next/image";
-import * as fs from "node:fs";
-
-const ai = new GoogleGenAI({
-  apiKey: process.env.GOOGLE_GENAI_API_KEY,
-});
 
 export async function generateImage(prompt: string): Promise<string> {
     try {
-        const response = await fetch('http://localhost:5000/api/endpoint', {
+        const response = await fetch('http://localhost:5000/api/generate-image', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: prompt, count: 42 })
+            body: JSON.stringify({ message: prompt })
         });
         
         if (!response.ok) {
