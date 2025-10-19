@@ -56,18 +56,18 @@ const FormattedAscii = ({ style, children}: FormattedAsciiProps) => {
       const b = children.slice(g_end, children.length);
 
       formatted = (
-        <div className='bg-black'>
+        <div className='bg-white'>
           <pre className="text-white">
             {r}
           </pre>
-          <pre className="absolute top-0 left-0 mix-blend-overlay" style={{ color: 'rgba(0, 0, 255, 0.5)' }}>
+          <pre className="absolute top-0 left-0 mix-blend-difference" style={{ color: 'rgba(255, 0, 0, 1)' }}>
+            {r}
+          </pre>
+          <pre className="absolute top-0 left-0 mix-blend-difference" style={{ color: 'rgba(0, 0, 255, 1)' }}>
             {b}
           </pre>
-          <pre className="absolute top-0 left-0 mix-blend-overlay" style={{ color: 'rgba(0, 255, 0, 0.5)' }}>
+          <pre className="absolute top-0 left-0 mix-blend-difference" style={{ color: 'rgba(0, 255, 0, 1)' }}>
             {g}
-          </pre>
-          <pre className="absolute top-0 left-0 mix-blend-overlay" style={{ color: 'rgba(255, 0, 0, 0.5)' }}>
-            {r}
           </pre>
         </div>
       );
