@@ -45,7 +45,7 @@ const FormattedAscii = ({ style, children}: FormattedAsciiProps) => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
             <div>
               <h3 style={{ color: '#f00', margin: '0 0 10px 0' }}>Red Layer</h3>
-              <pre style={preStyle}>
+              <pre>
                 {layers.red.map((row, i) => (
                   <React.Fragment key={i}>
                     {row.map((char, j) => (
@@ -61,7 +61,7 @@ const FormattedAscii = ({ style, children}: FormattedAsciiProps) => {
 
             <div>
               <h3 style={{ color: '#0f0', margin: '0 0 10px 0' }}>Green Layer</h3>
-              <pre style={preStyle}>
+              <pre>
                 {layers.green.map((row, i) => (
                   <React.Fragment key={i}>
                     {row.map((char, j) => (
@@ -77,7 +77,7 @@ const FormattedAscii = ({ style, children}: FormattedAsciiProps) => {
 
             <div>
               <h3 style={{ color: '#00f', margin: '0 0 10px 0' }}>Blue Layer</h3>
-              <pre style={preStyle}>
+              <pre>
                 {layers.blue.map((row, i) => (
                   <React.Fragment key={i}>
                     {row.map((char, j) => (
