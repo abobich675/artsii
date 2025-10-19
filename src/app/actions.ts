@@ -2,7 +2,7 @@
 
 export async function generateImage(prompt: string): Promise<string> {
     try {
-        const response = await fetch('http://localhost:5000/api/generate-image', {
+        const response = await fetch('http://localhost:6969/api/generate-image', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message: prompt })

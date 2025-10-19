@@ -1,16 +1,18 @@
 import numpy as np
 from PIL import Image
+import math
 
-def create_patches(img_array, p_size): 
+def create_patches(img_array, p_size):
+    vert_p_size = math.floor(p_size * 2)
     h, w, c = img_array.shape
-    h_patches = h // p_size
+    h_patches = h // vert_p_size
     w_patches = w // p_size
 
-    img_array = img_array[:h_patches * p_size, :w_patches * p_size]
+    img_array = img_array[:h_patches * vert_p_size, :w_patches * p_size]
 
     patches = (
         img_array
-        .reshape(h_patches, p_size, w_patches, p_size, c)
+        .reshape(h_patches, vert_p_size, w_patches, p_size, c)
         .swapaxes(1, 2)  # swap patch grid order
     )
     return patches
@@ -87,9 +89,9 @@ def col_matching(color):
     symbol = ascii_vals[saturation]
     return symbol
 
-def multilayered():
-    p_size = 10
-    with Image.open("/Users/teganmyers/Downloads/mountain_test.jpg") as im:
+def multilayered(imagePath):
+    p_size = 15
+    with Image.open(imagePath) as im:
         test = np.array(im)
     patches = create_patches(test, p_size)
     h_patches, w_patches = patches.shape[:2]
@@ -119,16 +121,17 @@ def multilayered():
     print(green_grid)
     print(blue_grid)    
 
-def create_ascii():
+def create_ascii(imagePath):
     function = input("Enter 'BW' for black and white art, 'RGB' for RGB variations, or 'C' for colored art: ")
     if function == "BW":
-        ascii_output()
+        result = ascii_output(imagePath)
     if function == "C":
-        colored_ascii()
+        result =colored_ascii(imagePath)
     if function == "RGB":
-        multilayered()
+        result = multilayered(imagePath)
     else:
         print("Please enter a valid choice.")
+    return result
 
 if __name__ == "__main__":
     create_ascii()

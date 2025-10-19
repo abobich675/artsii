@@ -24,7 +24,6 @@ export default function Home() {
       }
     }
     fetchGeneration()
-    console.log("generation requested")
   }
 
   return (
@@ -50,7 +49,7 @@ export default function Home() {
             </div>
           </div>
           <div className="flex min-h-50 outline rounded-4xl overflow-hidden justify-center items-center">
-            <pre className=" text-[2px] text-center whitespace-pre">
+            <pre className=" text-[4px] text-center whitespace-pre">
               {ascii}
             </pre>
           </div>
