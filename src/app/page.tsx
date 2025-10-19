@@ -5,10 +5,18 @@ import { Input } from "@/components/ui/input"
 import { generateImage } from "./actions";
 import { useState } from "react";
 import { toast } from "sonner";
+import FormattedAscii from "@/components/ui/FormattedAscii";
+
+
+type AsciiAndType = {
+  ascii: string;
+  style: string;
+}
 
 export default function Home() {
-  const [asciiList, setASCIIList] = useState<string[]>([])
-  const [style, setStyle] = useState<string>("color")
+  
+  const [asciiList, setASCIIList] = useState<AsciiAndType[]>([])
+  const [style, setStyle] = useState<string>("bw")
 
   let prompt = ""
 
@@ -17,11 +25,12 @@ export default function Home() {
       return
     
     const fetchGeneration = async () => {
+      const currStyle = style
       const res = await generateImage(prompt)
       if (!res) {
         toast.error("Failed to generate image")
       } else {
-        setASCIIList([...asciiList, res])
+        setASCIIList([...asciiList, {ascii:res, style: currStyle}])
       }
     }
     fetchGeneration()
@@ -34,7 +43,7 @@ export default function Home() {
         <Banner />
       </div>
       <div className="flex justify-center pt-10 pb-10">
-        <div className="w-[80%]">
+        <div className="w-[90%]">
           <div className="flex justify-center pb-10">
             <div className="flex w-full max-w-sm items-center gap-2">
               <Input placeholder="ASCII Image Prompt..." onChange={(e) => prompt = e.target.value}/>
@@ -48,11 +57,11 @@ export default function Home() {
               </select>
             </div>
           </div>
-          <div className="flex flex-wrap gap-2 justify-center">
-            {asciiList.reverse().map((ascii, index) => (
+          <div className="flex flex-wrap gap-5 justify-center">
+            {[...asciiList].reverse().map((ascii, index) => (
               <div key={index} className="flex w-min outline rounded-4xl overflow-hidden justify-center items-center">
-                <pre className="text-[4px] whitespace-pre text-center">
-                  {ascii}
+                <pre className="text-[3px] whitespace-pre text-center">
+                  <FormattedAscii style={ascii["style"]}>{ascii["ascii"]}</FormattedAscii>
                 </pre>
             </div>
             ))}
