@@ -10,7 +10,8 @@ def handle_data():
     print("processing request")
     data = request.json
     prompt = data.get("message")
-    result = run(prompt)
+    style = data.get("style")
+    result = run(prompt, style)
     return jsonify({"result": f"{result}"})
 
 

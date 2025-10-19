@@ -1,11 +1,11 @@
 'use server'
 
-export async function generateImage(prompt: string): Promise<string> {
+export async function generateImage(prompt: string, style: string): Promise<string> {
     try {
         const response = await fetch('http://localhost:6969/api/generate-image', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: prompt })
+            body: JSON.stringify({ message: prompt, style: style })
         });
         
         if (!response.ok) {
