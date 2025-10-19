@@ -78,19 +78,60 @@ def colored_ascii(imagePath):
             character = brightness_matching(lumi)
             ascii_im += (f"\033[38;2;{r};{g};{b}m{character}\033[0m")
         ascii_im += '\n'
-        
     return ascii_im
 
-def create_ascii(imagePath):
-    function = input("Enter 'BW' for black and white art or 'C' for colored art: ")
-    while True:
-        if function == "BW":
-            result = ascii_output(imagePath)
-            break
-        if function == "C":
-            result = colored_ascii(imagePath)
-            break
-        else:
-            print("Please enter a valid choice.")
-    return result
+def col_matching(color):
+    saturation = color * 59
+    saturation = int(saturation)
+    ascii_vals = """▓B%8&WM▒#*oahkqmZO0QLCJUYXzcxrjft░\|)1{}[]?-_+~>i!lI;:,"^`' """
+    symbol = ascii_vals[saturation]
+    return symbol
+
+def multilayered():
+    p_size = 10
+    with Image.open("/Users/teganmyers/Downloads/mountain_test.jpg") as im:
+        test = np.array(im)
+    patches = create_patches(test, p_size)
+    h_patches, w_patches = patches.shape[:2]
+
+    red_grid = ""
+    green_grid = ""
+    blue_grid = ""
+
+    for h in range(h_patches):
+        for w in range(w_patches):
+            patch = patches[h,w]
+            r = (patch[0, 0][0])/255
+            g = (patch[0, 0][1])/255
+            b = (patch[0, 0][2])/255
+
+            red = col_matching(r)
+            green = col_matching(g)
+            blue = col_matching(g)
+            red_grid += (f"\033[38;2;{255};{0};{0}m{red}\033[0m")
+            green_grid += (f"\033[38;2;{0};{255};{0}m{green}\033[0m")
+            blue_grid += (f"\033[38;2;{0};{0};{255}m{blue}\033[0m")
+        red_grid += '\n'
+        green_grid += '\n'
+        blue_grid += '\n'
+
+    print(red_grid)
+    print(green_grid)
+    print(blue_grid)    
+
+def run():
+    function = input("Enter 'BW' for black and white art, 'RGB' for RGB variations, or 'C' for colored art: ")
+    if function == "BW":
+        ascii_output()
+    if function == "C":
+        colored_ascii()
+    if function == "RGB":
+        multilayered()
+    else:
+        print("Please enter a valid choice.")
+
+
+
+if __name__ == "__main__":
+    run()
 
