@@ -3,7 +3,7 @@ from PIL import Image
 import math
 
 p_size = 5
-ascii_vals = """▓▒B%8W#*ohqmZOLCJUXzrjft░|)1]?-_+~>i!l:,"' """
+ascii_vals = """▓▒B@%8WM#*ZQOLCJUXohqmzrjft░|)1]?+-i!l:"' """
 
 def create_patches(img_array):
     vert_p_size = math.floor(p_size * 2)
