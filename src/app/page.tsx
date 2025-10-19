@@ -9,6 +9,8 @@ import FormattedAscii from "@/components/ui/FormattedAscii";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import Flower from "@/components/ui/Flower";
+import Flower2 from "@/components/ui/Flower2";
+
 
 type ColoredChar = {
   char: string;
@@ -57,7 +59,7 @@ export default function Home() {
       <div className="w-full flex items-center justify-center h-80 bg-pink-100 text-sm">
         <Flower />
         <Banner />
-        <Flower />
+        <Flower2 />
       </div>
       <div className="flex justify-center pt-10 pb-10">
         <div className="w-[90%]">
