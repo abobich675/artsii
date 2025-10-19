@@ -2,7 +2,10 @@ import numpy as np
 from PIL import Image
 import math
 
-def create_patches(img_array, p_size):
+p_size = 3
+ascii_vals = """▓▒░B@%8WM#*ZQOLCJUXohqmzrjft|)1]?+-i!l:"' """
+
+def create_patches(img_array):
     vert_p_size = math.floor(p_size * 2)
     h, w, c = img_array.shape
     h_patches = h // vert_p_size
@@ -37,18 +40,16 @@ def luminance(patch):
     return L
 
 def brightness_matching(lum):
-    brightness = lum * 59
+    brightness = lum * len(ascii_vals) - 1
     brightness = int(brightness)
-    ascii_vals = """▓B%8&WM▒#*oahkqmZO0QLCJUYXzcxrjft░\|)1{}[]?-_+~>i!lI;:,"^`' """
     symbol = ascii_vals[brightness]
     return symbol
 
 
 def ascii_output(imagePath):
-    p_size = 2
     with Image.open(imagePath) as im:
         test = np.array(im)
-    patches = create_patches(test, p_size)
+    patches = create_patches(test)
     h_patches, w_patches = patches.shape[:2]
 
     output = ""
@@ -62,10 +63,9 @@ def ascii_output(imagePath):
     return output
 
 def colored_ascii(imagePath):
-    p_size = 25
     with Image.open(imagePath) as im:
         test = np.array(im)
-    patches = create_patches(test, p_size)
+    patches = create_patches(test)
     h_patches, w_patches = patches.shape[:2]
 
     ascii_im = ""
@@ -83,17 +83,15 @@ def colored_ascii(imagePath):
     return ascii_im
 
 def col_matching(color):
-    saturation = color * 59
+    saturation = color * len(ascii_vals) - 1
     saturation = int(saturation)
-    ascii_vals = """▓B%8&WM▒#*oahkqmZO0QLCJUYXzcxrjft░\|)1{}[]?-_+~>i!lI;:,"^`' """
     symbol = ascii_vals[saturation]
     return symbol
 
 def multilayered(imagePath):
-    p_size = 15
     with Image.open(imagePath) as im:
         test = np.array(im)
-    patches = create_patches(test, p_size)
+    patches = create_patches(test)
     h_patches, w_patches = patches.shape[:2]
 
     red_grid = ""
@@ -122,17 +120,18 @@ def multilayered(imagePath):
     print(blue_grid)    
 
 def create_ascii(imagePath):
-    function = input("Enter 'BW' for black and white art, 'RGB' for RGB variations, or 'C' for colored art: ")
-    if function == "BW":
-        result = ascii_output(imagePath)
-    if function == "C":
-        result =colored_ascii(imagePath)
-    if function == "RGB":
-        result = multilayered(imagePath)
-    else:
-        print("Please enter a valid choice.")
+    result = ascii_output(imagePath)
+    # function = input("Enter 'BW' for black and white art, 'RGB' for RGB variations, or 'C' for colored art: ")
+    # if function == "BW":
+    #     result = ascii_output(imagePath)
+    # if function == "C":
+    #     result =colored_ascii(imagePath)
+    # if function == "RGB":
+    #     result = multilayered(imagePath)
+    # else:
+    #     print("Please enter a valid choice.")
     return result
 
 if __name__ == "__main__":
-    create_ascii()
+    print(create_ascii())
 
