@@ -119,36 +119,36 @@ def multilayered(imagePath):
             green_char = col_matching(g)
             blue_char = col_matching(b)
 
-            red_row.append(red_char)
-            green_row.append(green_char)
-            blue_row.append(blue_char)
+            r_row.append(red_char)
+            g_row.append(green_char)
+            b_row.append(blue_char)
             # red_grid += (f"\033[38;2;{255};{0};{0}m{red}\033[0m")
             # green_grid += (f"\033[38;2;{0};{255};{0}m{green}\033[0m")
             # blue_grid += (f"\033[38;2;{0};{0};{255}m{blue}\033[0m")
-        red_layer.append(red_row)
-        green_layer.append(green_row)  
-        blue_layer.append(blue_row)  
+        red_grid.append(r_row)
+        green_grid.append(g_row)  
+        blue_grid.append(b_row)  
         # red_grid += '\n'
         # green_grid += '\n'
         # blue_grid += '\n'
 
     return {
-        'red': red_layer,
-        'green': green_layer,
-        'blue': blue_layer
+        'red': red_grid,
+        'green': green_grid,
+        'blue': blue_grid
     }
 
-def create_ascii(imagePath):
-    result = ascii_output(imagePath)
-    # function = input("Enter 'BW' for black and white art, 'RGB' for RGB variations, or 'C' for colored art: ")
-    # if function == "BW":
-    #     result = ascii_output(imagePath)
-    # if function == "C":
-    #     result =colored_ascii(imagePath)
-    # if function == "RGB":
-    #     result = multilayered(imagePath)
-    # else:
-    #     print("Please enter a valid choice.")
+def create_ascii(imagePath, style):
+    if style == "bw":
+        result = ascii_output(imagePath)
+    elif style == "color":
+        result = colored_ascii(imagePath)
+    elif style == "rgb":
+        result = multilayered(imagePath)
+    else:
+        result = ""
+        print("Invalid Style!")
+        
     return result
 
 if __name__ == "__main__":
