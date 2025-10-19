@@ -45,7 +45,7 @@ export default function Home() {
           </div>
           <div className="h-150 outline rounded-4xl overflow-hidden">
             {imagePath ? (
-              <Image src={imagePath} alt={"Generated Image: " + prompt} />
+              imagePath // <Image src={imagePath} alt={"Generated Image: " + prompt} />
               ):(
                   "empty"
               )}
