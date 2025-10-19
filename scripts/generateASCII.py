@@ -1,8 +1,7 @@
 from google import genai
-from google.genai import types
 import random
 import sys
-from toASCII import run
+from toASCII import create_ascii
 
 client = genai.Client(api_key="AIzaSyBKlcOWRASNYeCo0OFeDMna3Koynhg-iBU")
     
@@ -20,8 +19,8 @@ def generate_image(prompt: str):
     path = f"generated_images/{random.randint(0, sys.maxsize)}.png"
     for generated_image in response.generated_images:
         generated_image.image.save(path)
-    return prompt
+    return path
 
 def generate_ascii(imagePath):
-    result = run()
+    result = create_ascii(imagePath)
     return result
