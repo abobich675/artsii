@@ -2,8 +2,12 @@ from google import genai
 import random
 import sys
 from toASCII import create_ascii
+from dotenv import load_dotenv
+import os
 
-client = genai.Client(api_key="AIzaSyBKlcOWRASNYeCo0OFeDMna3Koynhg-iBU")
+load_dotenv()
+api_key = os.getenv('GOOGLE_API_KEY')
+client = genai.Client(api_key = api_key)
     
 def run(prompt):
     imagePath = generate_image(prompt)
