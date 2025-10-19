@@ -2,6 +2,7 @@ from google import genai
 from google.genai import types
 import random
 import sys
+from toASCII import run
 
 client = genai.Client(api_key="AIzaSyBKlcOWRASNYeCo0OFeDMna3Koynhg-iBU")
     
@@ -22,4 +23,5 @@ def generate_image(prompt: str):
     return prompt
 
 def generate_ascii(imagePath):
-    return imagePath
+    result = run()
+    return result
