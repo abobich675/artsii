@@ -119,7 +119,7 @@ def multilayered():
     print(green_grid)
     print(blue_grid)    
 
-def run():
+def create_ascii():
     function = input("Enter 'BW' for black and white art, 'RGB' for RGB variations, or 'C' for colored art: ")
     if function == "BW":
         ascii_output()
@@ -130,8 +130,6 @@ def run():
     else:
         print("Please enter a valid choice.")
 
-
-
 if __name__ == "__main__":
-    run()
+    create_ascii()
 
