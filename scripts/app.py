@@ -12,7 +12,7 @@ def handle_data():
     prompt = data.get("message")
     style = data.get("style")
     result = run(prompt, style)
-    return jsonify({"result": f"{result}"})
+    return jsonify({"result": result})
 
 
 if __name__ == '__main__':
