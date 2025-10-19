@@ -8,8 +8,8 @@ import { toast } from "sonner";
 import FormattedAscii from "@/components/ui/FormattedAscii";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import Flower from "@/components/ui/Flower";
-import Flower2 from "@/components/ui/Flower2";
+import FlowerSet1 from "@/components/ui/FlowerSet1";
+import FlowerSet2 from "@/components/ui/FlowerSet2";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Gallery from "@/components/ui/Gallery";
 import GalleryButton from "@/components/ui/GalleryButton";
@@ -54,9 +54,9 @@ export default function Home() {
     <div className="">
       {/* <div className="w-full flex items-center justify-center h-80 bg-blue-100 text-5xl"> */}
       <div className="w-full flex items-center justify-center h-80 bg-pink-100 text-sm">
-        <Flower />
+        <FlowerSet1 />
         <Banner />
-        <Flower2 />
+        <FlowerSet2 />
       </div>
       <div className="flex justify-center pt-10 pb-10">
         <div className="w-[90%]">

@@ -1,4 +1,4 @@
-const Flower2 = () => {
+const FlowerSet2 = () => {
     const ascii =
       `
                  wWWWw   _
@@ -17,4 +17,4 @@ const Flower2 = () => {
   );
 }
 
-export default Flower2
+export default FlowerSet2

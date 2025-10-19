@@ -1,4 +1,4 @@
-const Flower = () => {
+const FlowerSet1 = () => {
     const ascii =
       `
                   _(_)_           
@@ -17,4 +17,4 @@ const Flower = () => {
   );
 }
 
-export default Flower
+export default FlowerSet1
