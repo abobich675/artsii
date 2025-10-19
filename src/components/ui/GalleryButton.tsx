@@ -21,9 +21,6 @@ const GalleryButton = ({ ascii, style}: GalleryButtonProps) => {
     
     const fetchGeneration = async () => {
       setLoading(true)
-      if (typeof ascii != "string") {
-        ascii = ascii.toString()
-      }
 
       const res = await addToGallery(ascii, style)
       if (!res) {

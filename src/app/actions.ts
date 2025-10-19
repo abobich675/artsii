@@ -21,12 +21,17 @@ export async function generateImage(prompt: string, style: string): Promise<stri
     }
 }
 
-interface GalleryItem {
-  ascii: string;
+type ColoredChar = {
+  char: string;
+  color: string;
+};
+
+type GalleryItem = {
+  ascii: string | ColoredChar[][];
   style: string;
 }
 
-export async function addToGallery(ascii: string, style: string) : Promise<boolean> {
+export async function addToGallery(ascii: string | ColoredChar[][], style: string) : Promise<boolean> {
   const filePath = "public/gallery.json";
 
   let data: GalleryItem[] = [];
