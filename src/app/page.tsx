@@ -47,13 +47,15 @@ export default function Home() {
               </select>
             </div>
           </div>
-          {asciiList.map((ascii, index) => (
-            <div key={index} className="flex min-h-50 outline rounded-4xl overflow-hidden justify-center items-center">
-              <pre className="text-[4px] whitespace-pre text-center">
-                {ascii}
-              </pre>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {asciiList.map((ascii, index) => (
+              <div key={index} className="flex w-min outline rounded-4xl overflow-hidden justify-center items-center">
+                <pre className="text-[4px] whitespace-pre text-center">
+                  {ascii}
+                </pre>
+            </div>
+            ))}
           </div>
-          ))}
         </div>
       </div>
     </div>
