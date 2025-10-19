@@ -18,7 +18,7 @@ type FormattedAsciiProps = {
 };
 
 const FormattedAscii = ({ style, children}: FormattedAsciiProps) => {
-  let formatted: React.ReactNode = "invalid input";
+  let formatted: React.ReactNode = "";
   switch (style) {
     case "bw":
       formatted = children ? children.toString() : "invalid input"
@@ -35,64 +35,30 @@ const FormattedAscii = ({ style, children}: FormattedAsciiProps) => {
             {'\n'}
           </React.Fragment>
         ));
+      } else {
+        formatted = "invalid input"
       }
       break
       
     case "rgb":
-      if (children && typeof children === 'object' && 'red' in children) {
-        const layers = children as RGBLayers;
-        formatted = (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
-            <div>
-              <h3 style={{ color: '#f00', margin: '0 0 10px 0' }}>Red Layer</h3>
-              <pre>
-                {layers.red.map((row, i) => (
-                  <React.Fragment key={i}>
-                    {row.map((char, j) => (
-                      <span key={j} style={{ color: 'rgb(255, 0, 0)' }}>
-                        {char}
-                      </span>
-                    ))}
-                    {'\n'}
-                  </React.Fragment>
-                ))}
-              </pre>
-            </div>
-
-            <div>
-              <h3 style={{ color: '#0f0', margin: '0 0 10px 0' }}>Green Layer</h3>
-              <pre>
-                {layers.green.map((row, i) => (
-                  <React.Fragment key={i}>
-                    {row.map((char, j) => (
-                      <span key={j} style={{ color: 'rgb(0, 255, 0)' }}>
-                        {char}
-                      </span>
-                    ))}
-                    {'\n'}
-                  </React.Fragment>
-                ))}
-              </pre>
-            </div>
-
-            <div>
-              <h3 style={{ color: '#00f', margin: '0 0 10px 0' }}>Blue Layer</h3>
-              <pre>
-                {layers.blue.map((row, i) => (
-                  <React.Fragment key={i}>
-                    {row.map((char, j) => (
-                      <span key={j} style={{ color: 'rgb(0, 0, 255)' }}>
-                        {char}
-                      </span>
-                    ))}
-                    {'\n'}
-                  </React.Fragment>
-                ))}
-              </pre>
-            </div>
-          </div>
-        );
+      if (!children || typeof children != "string") {
+        return "invalid input"
       }
+      const r_end = children.length / 3
+      const g_end = children.length / 3 * 2
+      const r = children.slice(0, r_end);
+      const g = children.slice(r_end, g_end);
+      const b = children.slice(g_end, children.length);
+
+      formatted = (
+        <div className='flex'>
+          <div>
+            <pre style={{ color: 'rgb(255, 0, 0)' }}>
+              {r}
+            </pre>
+          </div>
+        </div>
+      );
       break
 
     default:
