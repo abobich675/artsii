@@ -7,6 +7,7 @@ CORS(app)
 
 @app.route('/api/generate-image', methods=['POST'])
 def handle_data():
+    print("processing request")
     data = request.json
     prompt = data.get("message")
     result = run(prompt)

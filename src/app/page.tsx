@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input"
 import { generateImage } from "./actions";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function Home() {
   const [asciiList, setASCIIList] = useState<string[]>([])
@@ -18,7 +19,7 @@ export default function Home() {
     const fetchGeneration = async () => {
       const res = await generateImage(prompt)
       if (!res) {
-        console.log("sadge")
+        toast.error("Failed to generate image")
       } else {
         setASCIIList([...asciiList, res])
       }
@@ -48,7 +49,7 @@ export default function Home() {
             </div>
           </div>
           <div className="flex flex-wrap gap-2 justify-center">
-            {asciiList.map((ascii, index) => (
+            {asciiList.reverse().map((ascii, index) => (
               <div key={index} className="flex w-min outline rounded-4xl overflow-hidden justify-center items-center">
                 <pre className="text-[4px] whitespace-pre text-center">
                   {ascii}

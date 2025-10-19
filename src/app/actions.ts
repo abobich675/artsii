@@ -16,6 +16,6 @@ export async function generateImage(prompt: string): Promise<string> {
         return data.result;
     } catch (error) {
         console.error('Failed to generate image:', error);
-        throw error;
+        return ""
     }
 }
