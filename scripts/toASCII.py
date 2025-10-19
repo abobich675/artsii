@@ -100,14 +100,14 @@ def multilayered(imagePath):
     patches = create_patches(test)
     h_patches, w_patches = patches.shape[:2]
 
-    red_grid = []
-    green_grid = []
-    blue_grid = []
+    red_grid = ""
+    green_grid = ""
+    blue_grid = ""
 
     for h in range(h_patches):
-        r_row = []
-        g_row = []
-        b_row = []
+        r_row = ""
+        g_row = ""
+        b_row = ""
 
         for w in range(w_patches):
             patch = patches[h,w]
@@ -119,24 +119,14 @@ def multilayered(imagePath):
             green_char = col_matching(g)
             blue_char = col_matching(b)
 
-            r_row.append(red_char)
-            g_row.append(green_char)
-            b_row.append(blue_char)
-            # red_grid += (f"\033[38;2;{255};{0};{0}m{red}\033[0m")
-            # green_grid += (f"\033[38;2;{0};{255};{0}m{green}\033[0m")
-            # blue_grid += (f"\033[38;2;{0};{0};{255}m{blue}\033[0m")
-        red_grid.append(r_row)
-        green_grid.append(g_row)  
-        blue_grid.append(b_row)  
-        # red_grid += '\n'
-        # green_grid += '\n'
-        # blue_grid += '\n'
+            r_row += red_char
+            g_row += green_char
+            b_row += blue_char
+        red_grid += r_row + '\n'
+        green_grid += g_row + '\n'
+        blue_grid += b_row + '\n'
 
-    return {
-        'red': red_grid,
-        'green': green_grid,
-        'blue': blue_grid
-    }
+    return red_grid + green_grid + blue_grid
 
 def create_ascii(imagePath, style):
     if style == "bw":
