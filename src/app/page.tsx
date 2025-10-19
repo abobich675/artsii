@@ -6,7 +6,7 @@ import { generateImage } from "./actions";
 import { useState } from "react";
 
 export default function Home() {
-  const [ascii, setASCII] = useState<string>("")
+  const [asciiList, setASCIIList] = useState<string[]>([])
   const [style, setStyle] = useState<string>("color")
 
   let prompt = ""
@@ -20,7 +20,7 @@ export default function Home() {
       if (!res) {
         console.log("sadge")
       } else {
-        setASCII(res)
+        setASCIIList([...asciiList, res])
       }
     }
     fetchGeneration()
@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <div className="">
       {/* <div className="w-full flex items-center justify-center h-80 bg-blue-100 text-5xl"> */}
-      <div className="w-full flex items-center justify-center h-80 bg-blue-100 text-sm">
+      <div className="w-full flex items-center justify-center h-80 bg-pink-100 text-sm">
         <Banner />
       </div>
       <div className="flex justify-center pt-10 pb-10">
@@ -47,10 +47,14 @@ export default function Home() {
               </select>
             </div>
           </div>
-          <div className="flex min-h-50 outline rounded-4xl overflow-hidden justify-center items-center">
-            <pre className=" text-[4px] text-center whitespace-pre">
-              {ascii}
-            </pre>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {asciiList.map((ascii, index) => (
+              <div key={index} className="flex w-min outline rounded-4xl overflow-hidden justify-center items-center">
+                <pre className="text-[4px] whitespace-pre text-center">
+                  {ascii}
+                </pre>
+            </div>
+            ))}
           </div>
         </div>
       </div>
