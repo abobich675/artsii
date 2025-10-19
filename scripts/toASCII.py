@@ -68,9 +68,10 @@ def colored_ascii(imagePath):
     patches = create_patches(test)
     h_patches, w_patches = patches.shape[:2]
 
-    ascii_im = ""
+    ascii_chars = []
 
     for h in range(h_patches):
+        row_chars = []
         for w in range(w_patches):
             patch = patches[h,w]
             r = (patch[0, 0][0])
@@ -78,9 +79,14 @@ def colored_ascii(imagePath):
             b = (patch[0, 0][2])
             lumi = luminance(patch)
             character = brightness_matching(lumi)
-            ascii_im += (f"\033[38;2;{r};{g};{b}m{character}\033[0m")
-        ascii_im += '\n'
-    return ascii_im
+            row_chars.append({
+                'char': character,
+                'color': f'rgb({r},{g},{b})'
+            })
+            ascii_chars.append(row_chars)
+            #ascii_im += (f"\033[38;2;{r};{g};{b}m{character}\033[0m")
+        #ascii_im += '\n'
+    return ascii_chars
 
 def col_matching(color):
     saturation = color * len(ascii_vals) - 1
@@ -94,30 +100,43 @@ def multilayered(imagePath):
     patches = create_patches(test)
     h_patches, w_patches = patches.shape[:2]
 
-    red_grid = ""
-    green_grid = ""
-    blue_grid = ""
+    red_grid = []
+    green_grid = []
+    blue_grid = []
 
     for h in range(h_patches):
+        r_row = []
+        g_row = []
+        b_row = []
+
         for w in range(w_patches):
             patch = patches[h,w]
             r = (patch[0, 0][0])/255
             g = (patch[0, 0][1])/255
             b = (patch[0, 0][2])/255
 
-            red = col_matching(r)
-            green = col_matching(g)
-            blue = col_matching(b)
-            red_grid += (f"\033[38;2;{255};{0};{0}m{red}\033[0m")
-            green_grid += (f"\033[38;2;{0};{255};{0}m{green}\033[0m")
-            blue_grid += (f"\033[38;2;{0};{0};{255}m{blue}\033[0m")
-        red_grid += '\n'
-        green_grid += '\n'
-        blue_grid += '\n'
+            red_char = col_matching(r)
+            green_char = col_matching(g)
+            blue_char = col_matching(b)
 
-    print(red_grid)
-    print(green_grid)
-    print(blue_grid)    
+            red_row.append(red_char)
+            green_row.append(green_char)
+            blue_row.append(blue_char)
+            # red_grid += (f"\033[38;2;{255};{0};{0}m{red}\033[0m")
+            # green_grid += (f"\033[38;2;{0};{255};{0}m{green}\033[0m")
+            # blue_grid += (f"\033[38;2;{0};{0};{255}m{blue}\033[0m")
+        red_layer.append(red_row)
+        green_layer.append(green_row)  
+        blue_layer.append(blue_row)  
+        # red_grid += '\n'
+        # green_grid += '\n'
+        # blue_grid += '\n'
+
+    return {
+        'red': red_layer,
+        'green': green_layer,
+        'blue': blue_layer
+    }
 
 def create_ascii(imagePath):
     result = ascii_output(imagePath)
