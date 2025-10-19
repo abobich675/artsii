@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import FormattedAscii from "@/components/ui/FormattedAscii";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
+import Flower from "@/components/ui/Flower";
 
 
 type AsciiAndType = {
@@ -45,13 +46,15 @@ export default function Home() {
     <div className="">
       {/* <div className="w-full flex items-center justify-center h-80 bg-blue-100 text-5xl"> */}
       <div className="w-full flex items-center justify-center h-80 bg-pink-100 text-sm">
+        <Flower />
         <Banner />
+        <Flower />
       </div>
       <div className="flex justify-center pt-10 pb-10">
         <div className="w-[90%]">
-          <div className="flex w-full justify-center gap-5">
+          <div className="flex w-full justify-center gap-5 items-center">
             <div>
-              hello
+              <Image src="/alphabet_blocks.svg" alt="Alphabet blocks" width={100} height={100}/>
             </div>
             <div>
               <div className="flex w-max items-center gap-2">
@@ -72,8 +75,8 @@ export default function Home() {
                 </Button>
               </div>
             </div>
-            <Image src="/alphabet_blocks.svg" alt="Alphabet blocks" width={200} height={200}/>
-          </div>
+              <Image src="/alphabet_blocks.svg" alt="Alphabet blocks" width={100} height={100}/>
+            </div>
           <div className="flex flex-wrap gap-5 justify-center">
             {[...asciiList].reverse().map((ascii, index) => (
               <div key={index} className="flex w-min outline rounded-4xl overflow-hidden justify-center items-center">
