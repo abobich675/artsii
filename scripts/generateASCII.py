@@ -11,7 +11,10 @@ api_key = os.getenv('GOOGLE_API_KEY')
 client = genai.Client(api_key = api_key)
     
 def run(prompt, style):
-    imagePath = generate_image(prompt)
+    if os.getenv('USE_AI') == "true":
+        imagePath = generate_image(prompt)
+    else:
+        imagePath = find_image()
     result = generate_ascii(imagePath, style)
     return result
 
@@ -30,6 +33,16 @@ def generate_image(prompt: str):
     # img.save(path)
 
     return path
+
+def find_image():
+    folder = "generated_images"
+    images = []
+    for filename in os.listdir(folder):
+        if filename.lower().endswith(".png"):
+            images.append(os.path.join(folder, filename))
+    if images == []:
+        return None  # No PNG found
+    return images[random.randint(0, sys.maxsize) % len(images)]
 
 def generate_ascii(imagePath, style):
     result = create_ascii(imagePath, style)
