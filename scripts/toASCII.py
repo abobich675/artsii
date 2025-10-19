@@ -141,7 +141,7 @@ def multilayered(imagePath):
 def create_ascii(imagePath, style):
     if style == "bw":
         result = ascii_output(imagePath)
-    elif style == "colored":
+    elif style == "color":
         result = colored_ascii(imagePath)
     elif style == "rgb":
         result = multilayered(imagePath)
