@@ -42,23 +42,26 @@ def brightness_matching(lum):
     return symbol
 
 
-def ascii_output():
+def ascii_output(imagePath):
     p_size = 2
-    with Image.open("bulba.jpeg") as im:
+    with Image.open(imagePath) as im:
         test = np.array(im)
     patches = create_patches(test, p_size)
     h_patches, w_patches = patches.shape[:2]
 
+    output = ""
     for h in range(h_patches):
         for w in range(w_patches):
             patch = patches[h,w]
             lumi = luminance(patch)
-            print(brightness_matching(lumi), end="")
-        print()
+            character = brightness_matching(lumi)
+            output += character
+        output += '\n'
+    return output
 
-def colored_ascii():
+def colored_ascii(imagePath):
     p_size = 25
-    with Image.open("starry_night.jpg") as im:
+    with Image.open(imagePath) as im:
         test = np.array(im)
     patches = create_patches(test, p_size)
     h_patches, w_patches = patches.shape[:2]
@@ -76,19 +79,18 @@ def colored_ascii():
             ascii_im += (f"\033[38;2;{r};{g};{b}m{character}\033[0m")
         ascii_im += '\n'
         
-    print(ascii_im)
+    return ascii_im
 
-def run():
+def create_ascii(imagePath):
     function = input("Enter 'BW' for black and white art or 'C' for colored art: ")
-    if function == "BW":
-        ascii_output()
-    if function == "C":
-        colored_ascii()
-    else:
-        print("Please enter a valid choice.")
-
-
-
-if __name__ == "__main__":
-    run()
+    while True:
+        if function == "BW":
+            result = ascii_output(imagePath)
+            break
+        if function == "C":
+            result = colored_ascii(imagePath)
+            break
+        else:
+            print("Please enter a valid choice.")
+    return result
 
