@@ -42,7 +42,6 @@ def luminance(patch):
 def brightness_matching(lum):
     brightness = lum * len(ascii_vals) - 1
     brightness = int(brightness)
-    ascii_vals = """▓B%8&WM▒#*oahkqmZO0QLCJUYXzcxrjft░\|)1{}[]?-_+~>i!lI;:,"^`' """
     symbol = ascii_vals[brightness]
     return symbol
 
@@ -86,7 +85,6 @@ def colored_ascii(imagePath):
 def col_matching(color):
     saturation = color * len(ascii_vals) - 1
     saturation = int(saturation)
-    ascii_vals = """▓B%8&WM▒#*oahkqmZO0QLCJUYXzcxrjft░\|)1{}[]?-_+~>i!lI;:,"^`' """
     symbol = ascii_vals[saturation]
     return symbol
 
