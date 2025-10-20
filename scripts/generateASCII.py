@@ -9,32 +9,38 @@ import json
 load_dotenv()
 api_key = os.getenv('GOOGLE_API_KEY')
 client = genai.Client(api_key = api_key)
+MODELS = ["imagen-4.0-fast-generate-001", "imagen-3.0-generate-002", "imagen-4.0-generate-001", "imagen-4.0-ultra-generate-001"]
     
 def run(prompt, style):
     global api_key
     if os.getenv('USE_AI') == "true":
-        successful = False
-        for i in range(4):
-            try:
-                api_key = os.getenv(f'GOOGLE_API_KEY{i+1 if i != 0 else ""}')
-                if api_key == "":
-                    continue
-                    
-                imagePath = generate_image(prompt)
-                successful = True
-                break
-            except:
-                pass
-    if os.getenv('USE_AI') != "true" or not successful:
+        imagePath = generate_image(prompt)
+    if os.getenv('USE_AI') != "true" or not imagePath:
         imagePath = find_image()
     result = generate_ascii(imagePath, style)
     return result
 
 def generate_image(prompt: str):
-    response = client.models.generate_images(
-        model='imagen-4.0-generate-001',
-        prompt=prompt
-    )
+    for model in MODELS:
+        success = False
+        try:
+            response = client.models.generate_images(
+                model=model,
+                prompt=prompt
+            )
+            success = True
+        except Exception as e:
+            print("Error generating image: ", e)
+            # You can check for quota specifically
+            if e.status_code == 429:
+                print(f"Quota exceeded or rate-limited: {model}.")
+        
+        if success:
+            break
+    
+    if not success:
+        return False
+        
     
     path = f"generated_images/{random.randint(0, sys.maxsize)}.png"
     for generated_image in response.generated_images:
