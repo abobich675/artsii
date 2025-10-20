@@ -84,8 +84,6 @@ def colored_ascii(imagePath):
                 'color': f'rgb({r},{g},{b})'
             })
         ascii_chars.append(row_chars)
-            #ascii_im += (f"\033[38;2;{r};{g};{b}m{character}\033[0m")
-        #ascii_im += '\n'
     return ascii_chars
 
 def col_matching(color):

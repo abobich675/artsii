@@ -5,6 +5,7 @@ from toASCII import create_ascii
 from dotenv import load_dotenv
 import os
 import json
+from storeImg import upload_blob
 
 load_dotenv()
 api_key = os.getenv('GOOGLE_API_KEY')
@@ -45,7 +46,9 @@ def generate_image(prompt: str):
     path = f"generated_images/{random.randint(0, sys.maxsize)}.png"
     for generated_image in response.generated_images:
         generated_image.image.save(path)
-
+    
+    upload_blob("ascii-gemini-images", path, path.split("/")[1])
+    
     return path
 
 def find_image():
