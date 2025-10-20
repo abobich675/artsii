@@ -7,7 +7,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import FormattedAscii from "@/components/ui/FormattedAscii";
 import { Loader2 } from "lucide-react";
-import Image from "next/image";
 import FlowerSet1 from "@/components/ui/FlowerSet1";
 import FlowerSet2 from "@/components/ui/FlowerSet2";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -52,7 +51,6 @@ export default function Home() {
 
   return (
     <div className="">
-      {/* <div className="w-full flex items-center justify-center h-80 bg-blue-100 text-5xl"> */}
       <div className="w-full flex items-center justify-center h-80 bg-pink-100 text-sm">
         <FlowerSet1 />
         <Banner />
@@ -69,9 +67,6 @@ export default function Home() {
             </div>
             <TabsContent value="generate">
               <div className="flex w-full justify-center gap-5 items-center pb-10">
-                <div>
-                  <Image src="/alphabet_blocks.svg" alt="Alphabet blocks" width={100} height={100}/>
-                </div>
                 <div>
                   <div className="flex w-max items-center gap-2">
                     <Input className="w-100" placeholder="ASCII Image Prompt..." value={prompt} onChange={(e) => setPrompt(e.target.value || "")}/>
@@ -92,7 +87,6 @@ export default function Home() {
                     </Button>
                   </div>
                 </div>
-                <Image src="/alphabet_blocks.svg" alt="Alphabet blocks" width={100} height={100}/>
               </div>
               <div className="flex flex-wrap gap-5 justify-center">
                 {[...asciiList].reverse().map((ascii, index) => (
