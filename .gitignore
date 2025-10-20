@@ -41,7 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 # images
-# /generated_images/*
+/generated_images/*
 
 # python
 __pycache__/
