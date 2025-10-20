@@ -23,10 +23,7 @@ const FormattedAscii = ({ style, children}: FormattedAsciiProps) => {
     case "bw":
       formatted = children ? children.toString() : "invalid input"
       break
-      //<span className='color[rgb:()]'>character</span>
     case "color":
-      console.log("children type:", typeof children);
-      console.log("children:", children);
       if (Array.isArray(children)) {
         const rows: React.ReactNode[] = [];
         (children as ColoredChar[][]).forEach((row, rowIndex) => {

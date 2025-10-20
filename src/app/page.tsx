@@ -51,7 +51,7 @@ export default function Home() {
 
   return (
     <div className="">
-      <div className="w-full flex items-center justify-center h-80 bg-pink-100 text-sm">
+      <div className="w-full flex items-center justify-between h-80 bg-pink-100 text-sm gap-4">
         <FlowerSet1 />
         <Banner />
         <FlowerSet2 />
