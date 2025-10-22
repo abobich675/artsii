@@ -1,9 +1,10 @@
 import numpy as np
 from PIL import Image
 import math
+import random
 
-p_size = 3
-ascii_vals = """▓▒░B@%8WM#*ZQOLCJUXohqmzrjft|)1]?+-i!l:"' """
+p_size = 4
+ascii_vals = """█▓▒@W#B8%&M$XOQZ0QLCJUYXohqnmczrjft|)1?/!-;:,^`'·░"""
 
 def create_patches(img_array):
     vert_p_size = math.floor(p_size * 2)
@@ -40,8 +41,7 @@ def luminance(patch):
     return L
 
 def brightness_matching(lum):
-    brightness = lum * len(ascii_vals) - 1
-    brightness = int(brightness)
+    brightness = int(lum * (len(ascii_vals) - 1))
     symbol = ascii_vals[brightness]
     return symbol
 
@@ -62,6 +62,11 @@ def ascii_output(imagePath):
         output += '\n'
     return output
 
+def col_matching(color):
+    saturation = int(color * (len(ascii_vals) - 1))
+    symbol = ascii_vals[saturation]
+    return symbol
+
 def colored_ascii(imagePath):
     with Image.open(imagePath) as im:
         test = np.array(im)
@@ -74,25 +79,20 @@ def colored_ascii(imagePath):
         row_chars = []
         for w in range(w_patches):
             patch = patches[h,w]
-            r = (patch[0, 0][0])
-            g = (patch[0, 0][1])
-            b = (patch[0, 0][2])
+            delimeter = " "
+            # r = (patch[0, 0][0])
+            # g = (patch[0, 0][1])
+            # b = (patch[0, 0][2])
+            r, g, b = patch[:, :, 0].mean(), patch[:, :, 1].mean(), patch[:, :, 2].mean()
             lumi = luminance(patch)
             character = brightness_matching(lumi)
+            #character = random.choice(ascii_vals)
             row_chars.append({
                 'char': character,
                 'color': f'rgb({r},{g},{b})'
             })
         ascii_chars.append(row_chars)
-            #ascii_im += (f"\033[38;2;{r};{g};{b}m{character}\033[0m")
-        #ascii_im += '\n'
     return ascii_chars
-
-def col_matching(color):
-    saturation = color * len(ascii_vals) - 1
-    saturation = int(saturation)
-    symbol = ascii_vals[saturation]
-    return symbol
 
 def multilayered(imagePath):
     with Image.open(imagePath) as im:
@@ -111,9 +111,10 @@ def multilayered(imagePath):
 
         for w in range(w_patches):
             patch = patches[h,w]
-            r = (patch[0, 0][0])/255
-            g = (patch[0, 0][1])/255
-            b = (patch[0, 0][2])/255
+            # r = (patch[0, 0][0])/255
+            # g = (patch[0, 0][1])/255
+            # b = (patch[0, 0][2])/255
+            r, g, b = patch[:, :, 0].mean(), patch[:, :, 1].mean(), patch[:, :, 2].mean()
 
             red_char = col_matching(r)
             green_char = col_matching(g)
@@ -142,5 +143,5 @@ def create_ascii(imagePath, style):
     return result
 
 if __name__ == "__main__":
-    print(create_ascii())
+    print(create_ascii(imagePath, style))
 
