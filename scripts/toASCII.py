@@ -1,5 +1,6 @@
 import numpy as np
 from PIL import Image
+import io
 import math
 
 p_size = 3
@@ -46,9 +47,9 @@ def brightness_matching(lum):
     return symbol
 
 
-def ascii_output(imagePath):
-    with Image.open(imagePath) as im:
-        test = np.array(im)
+def bw_ascii(image_bytes):
+    image = Image.open(io.BytesIO(image_bytes))
+    test = np.array(image)
     patches = create_patches(test)
     h_patches, w_patches = patches.shape[:2]
 
@@ -62,9 +63,9 @@ def ascii_output(imagePath):
         output += '\n'
     return output
 
-def colored_ascii(imagePath):
-    with Image.open(imagePath) as im:
-        test = np.array(im)
+def colored_ascii(image_bytes):
+    image = Image.open(io.BytesIO(image_bytes))
+    test = np.array(image)
     patches = create_patches(test)
     h_patches, w_patches = patches.shape[:2]
 
@@ -92,9 +93,9 @@ def col_matching(color):
     symbol = ascii_vals[saturation]
     return symbol
 
-def multilayered(imagePath):
-    with Image.open(imagePath) as im:
-        test = np.array(im)
+def rgb_ascii(image_bytes):
+    image = Image.open(io.BytesIO(image_bytes))
+    test = np.array(image)
     patches = create_patches(test)
     h_patches, w_patches = patches.shape[:2]
 
@@ -126,13 +127,13 @@ def multilayered(imagePath):
 
     return red_grid + green_grid + blue_grid
 
-def create_ascii(imagePath, style):
+def create_ascii(image_bytes, style):
     if style == "bw":
-        result = ascii_output(imagePath)
+        result = bw_ascii(image_bytes)
     elif style == "color":
-        result = colored_ascii(imagePath)
+        result = colored_ascii(image_bytes)
     elif style == "rgb":
-        result = multilayered(imagePath)
+        result = rgb_ascii(image_bytes)
     else:
         result = ""
         print("Invalid Style!")

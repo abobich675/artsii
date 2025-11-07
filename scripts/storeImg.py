@@ -4,7 +4,7 @@ from google.cloud import storage
 load_dotenv()
 storage_client = storage.Client()
 
-def upload_blob(bucket_name, source_file_name, destination_blob_name):
+def upload_blob_from_file(bucket_name, source_file_name, destination_blob_name):
     """Uploads a file to the bucket."""
     # The ID of your GCS bucket
     # bucket_name = "your-bucket-name"
@@ -25,9 +25,19 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
     generation_match_precondition = 0
 
     blob.upload_from_filename(source_file_name, if_generation_match=generation_match_precondition)
-    # blob.upload_from_file()
-    # blob.upload_from_string()
+    # blob.upload_from_file(source_file_name)
+    # blob.upload_from_string(image_bytes, content_type="image/png")
 
     print(
         f"File {source_file_name} uploaded to {destination_blob_name}."
+    )
+
+def upload_blob_from_bytes(bucket_name, image_bytes, destination_blob_name):
+    """Uploads a file to the bucket."""
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(destination_blob_name)
+    blob.upload_from_string(image_bytes, content_type="image/png")
+
+    print(
+        f"Uploaded image to {destination_blob_name}."
     )

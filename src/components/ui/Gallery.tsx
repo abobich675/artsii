@@ -1,49 +1,46 @@
 import { useEffect, useState } from 'react';
 import FormattedAscii from './FormattedAscii';
 import { Skeleton } from './skeleton';
+import { getDatabaseAscii, getGalleryContents } from '@/app/actions';
 
 export default function Gallery() {
   const [data, setData] = useState<any>([]);
-  const [visibleCount, setVisibleCount] = useState(0);
+  const [loading, setLoading] = useState<boolean>(true);
+  // const [visibleCount, setVisibleCount] = useState(0);
 
   useEffect(() => {
     const doFetch = async () => {
-      await fetch('/gallery.json')
-        .then(res => res.json())
-        .then(json => setData(json));
+      const galleryContents = await getGalleryContents()
+      if (!galleryContents) return false
+
+      const asciiResults = [];
+      for (const e of galleryContents) {
+        const asciiData = await getDatabaseAscii(e.image, e.style);
+        asciiResults.push({ ...e, ...asciiData });
+        setData(asciiResults);
+        await new Promise(r => setTimeout(r, 50));
+      }
+
+
+      setLoading(false)
     }
     doFetch()
   }, []);
 
-  useEffect(() => {
-    if (!data.length) return;
-    setVisibleCount(0);
-
-    const interval = setInterval(() => {
-      setVisibleCount(prev => {
-        if (prev >= data.length) {
-          clearInterval(interval);
-          return prev;
-        }
-        return prev + 1;
-      });
-    }, 5); // ms between each render
-
-    return () => clearInterval(interval);
-  }, [data]);
-
-  const visibleData = [...data].reverse().slice(0, visibleCount);
+  // const visibleData = [...data].reverse().slice(0, visibleCount);
+  // const visibleData = [...data].reverse();
 
   return (
     <div className="flex flex-wrap gap-5 justify-center mt-10">
-      {visibleData.map((ascii, index) => (
+      {data.map((ascii, index) => (
         <div key={index} className="flex w-min outline rounded-4xl overflow-hidden justify-center items-center relative">
             <pre className="text-[3px] whitespace-pre text-center">
               <FormattedAscii style={ascii["style"]}>{ascii["ascii"]}</FormattedAscii>
             </pre>
         </div>
       ))}
-      {visibleCount < data.length && <Skeleton className="h-[765px] w-[618.062px] rounded-4xl" />}
+      {/* {visibleCount < data.length && <Skeleton className="h-[765px] w-[618.062px] rounded-4xl" />} */}
+      {loading && <Skeleton className="h-[765px] w-[618.062px] rounded-4xl" />}
     </div>
   );
 }

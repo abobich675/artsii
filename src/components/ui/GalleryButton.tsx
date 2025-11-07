@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { addToGallery } from '@/app/actions';
+import { addToDatabase, addToGallery } from '@/app/actions';
 
 type ColoredChar = {
   char: string;
@@ -12,9 +12,10 @@ type ColoredChar = {
 type GalleryButtonProps = {
   ascii: string | ColoredChar[][]
   style: string;
+  path: string;
 };
 
-const GalleryButton = ({ ascii, style}: GalleryButtonProps) => {
+const GalleryButton = ({ ascii, style, path}: GalleryButtonProps) => {
   const [loading, setLoading] = useState(false)
 
   function addImage() {
@@ -22,7 +23,9 @@ const GalleryButton = ({ ascii, style}: GalleryButtonProps) => {
     const fetchGeneration = async () => {
       setLoading(true)
 
-      const res = await addToGallery(ascii, style)
+      // const res = await addToGallery(ascii, style)
+      const res = await addToDatabase(path, style, "", "", "", true)
+
       if (!res) {
         toast.error("Failed to add image to gallery")
       }

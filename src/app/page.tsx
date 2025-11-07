@@ -21,6 +21,7 @@ type ColoredChar = {
 type AsciiAndType = {
   ascii: string | ColoredChar[][];
   style: string;
+  path: string;
 }
 
 export default function Home() {
@@ -57,7 +58,7 @@ export default function Home() {
       if (!res) {
         toast.error("Failed to generate image")
       } else {
-        setASCIIList([...asciiList, {ascii:res, style: currStyle}])
+        setASCIIList([...asciiList, res])
       }
       setLoading(false)
     }
@@ -128,7 +129,7 @@ export default function Home() {
                       </pre>
                     </div>
                     <div className="flex justify-center">
-                      <GalleryButton ascii={ascii["ascii"]} style={ascii["style"]} />
+                      <GalleryButton ascii={ascii["ascii"]} style={ascii["style"]} path={ascii["path"]} />
                     </div>
                   </div>
                 ))}
