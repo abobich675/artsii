@@ -100,3 +100,6 @@ def run_fetch(path, style):
     image_bytes = blob.download_as_bytes()
     result = create_ascii(image_bytes, style)
     return result
+
+def run_upload(image_bytes, style):
+    return create_ascii(image_bytes, style)
