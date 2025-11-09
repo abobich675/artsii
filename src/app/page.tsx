@@ -2,7 +2,7 @@
 import Banner from "@/components/ui/Banner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input"
-import { generateImage, getAsciiFromUpload } from "./actions";
+import { generateImage } from "./actions";
 import { useState } from "react";
 import { toast } from "sonner";
 import FormattedAscii from "@/components/ui/FormattedAscii";
@@ -29,30 +29,54 @@ export default function Home() {
   
   const [asciiList, setASCIIList] = useState<AsciiAndType[]>([])
   const [prompt, setPrompt] = useState("")
-  const [fileBytes, setFileBytes] = useState<number[]>()
+  const [file, setFile] = useState<File>()
   const [inputType, setInputType] = useState("prompt")
   const [style, setStyle] = useState<string>("color")
   const [size, setSize] = useState<string>("normal")
   const [loading, setLoading] = useState(false)
 
+  async function getAsciiFromUpload(file: File, style: string) {
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      form.append("style", style);
+
+      const response = await fetch('http://127.0.0.1:6969/api/get-upload-ascii', {
+          method: 'POST',
+          body: form
+      });
+      
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return {
+          ascii: data.ascii,
+          style: data.style,
+          path: ""
+      };
+    } catch (error) {
+        console.error('Failed to generate image:', error);
+        return false
+    }
+  }
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    const arrayBuffer = await file.arrayBuffer();
-    const uint8Array = new Uint8Array(arrayBuffer);
-    const byteArray = Array.from(uint8Array);
-    setFileBytes(byteArray)
-    console.log(fileBytes)
+    setFile(file)
   }
 
   function generate() {
-    if (inputType == "prompt" && !prompt) {
+    const currPrompt = prompt
+    const currFile = file
+    if (inputType == "prompt" && !currPrompt) {
       toast.error("You must enter a prompt")
       return
     }
 
-    if (inputType == "upload" && !fileBytes) {
+    if (inputType == "upload" && !currFile) {
       toast.error("You must upload a file")
       return
     }
@@ -60,7 +84,7 @@ export default function Home() {
     const fetchGeneration = async () => {
       setLoading(true)
       if (inputType == "prompt") {
-        const res = await generateImage(prompt, style)
+        const res = await generateImage(currPrompt, style)
         if (!res) {
           toast.error("Failed to generate image")
         } else {
@@ -68,11 +92,13 @@ export default function Home() {
         }
       } else if (inputType == "upload") {
 
-        if (!fileBytes) {
+        if (!currFile) {
           toast.error("You need to upload a file to do that!")
           return
         }
-        const res = await getAsciiFromUpload(fileBytes, style)
+
+        const res = await getAsciiFromUpload(currFile, style)
+
         if (!res) {
           toast.error("Failed to generate image")
         } else {
@@ -152,7 +178,11 @@ export default function Home() {
                       </pre>
                     </div>
                     <div className="flex justify-center">
-                      <GalleryButton ascii={ascii["ascii"]} style={ascii["style"]} path={ascii["path"]} />
+                      { ascii["path"] ?
+                        <GalleryButton ascii={ascii["ascii"]} style={ascii["style"]} path={ascii["path"]} />
+                        :
+                        "Gallery does not support uploaded images"
+                      }
                     </div>
                   </div>
                 ))}

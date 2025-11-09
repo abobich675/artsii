@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from generateASCII import run_generation, run_fetch, run_upload
+import base64, io
+from PIL import Image
 
 app = Flask(__name__)
 CORS(app)
@@ -27,11 +29,9 @@ def handle_database():
 @app.route('/api/get-upload-ascii', methods=['POST'])
 def handle_upload():
     print("processing request")
-    data = request.json
-    image_bytes = data.get("bytes")
-    if isinstance(image_bytes, list):
-        image_bytes = bytes(image_bytes)
-    style = data.get("style")
+    file = request.files["file"]
+    image_bytes = file.read()
+    style = request.form.get("style")
     ascii = run_upload(image_bytes, style)
     return jsonify({"ascii": ascii, "style": style})
 

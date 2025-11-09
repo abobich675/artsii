@@ -19,6 +19,8 @@ const GalleryButton = ({ ascii, style, path}: GalleryButtonProps) => {
   const [loading, setLoading] = useState(false)
 
   function addImage() {
+
+    if (!path) return
     
     const fetchGeneration = async () => {
       setLoading(true)

@@ -3,12 +3,21 @@ from PIL import Image
 import io
 import math
 
-p_size = 3
+# p_size = 3
+p_size_scalar = 340
 ascii_vals = """▓▒░B@%8WM#*ZQOLCJUXohqmzrjft|)1]?+-i!l:"' """
 
+def get_p_size(h, w):
+    
+    if w >= h:
+        return math.ceil(w / p_size_scalar)
+    else:
+        return math.ceil(h / p_size_scalar)
+
 def create_patches(img_array):
-    vert_p_size = math.floor(p_size * 2)
     h, w, c = img_array.shape
+    p_size = get_p_size(h, w)
+    vert_p_size = math.floor(p_size * 2)
     h_patches = h // vert_p_size
     w_patches = w // p_size
 

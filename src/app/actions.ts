@@ -123,31 +123,3 @@ export async function getDatabaseAscii(path: string, style: string) {
       return false
   }
 }
-
-export async function getAsciiFromUpload(fileBytes: number[], style: string): Promise<{
-  ascii: string,
-  style: string,
-  path: string
-} | false> {
-  try {
-      const response = await fetch('http://127.0.0.1:6969/api/get-upload-ascii', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ bytes: fileBytes, style: style })
-      });
-      
-      if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      return {
-          ascii: data.ascii,
-          style: data.style,
-          path: ""
-      };
-  } catch (error) {
-      console.error('Failed to generate image:', error);
-      return false
-  }
-}
