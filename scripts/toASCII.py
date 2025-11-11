@@ -2,6 +2,7 @@ import numpy as np
 from PIL import Image
 import io
 import math
+import random
 
 # p_size = 3
 p_size_scalar = 340
@@ -50,8 +51,7 @@ def luminance(patch):
     return L
 
 def brightness_matching(lum):
-    brightness = lum * len(ascii_vals) - 1
-    brightness = int(brightness)
+    brightness = int(lum * (len(ascii_vals) - 1))
     symbol = ascii_vals[brightness]
     return symbol
 
@@ -84,11 +84,14 @@ def colored_ascii(image_bytes):
         row_chars = []
         for w in range(w_patches):
             patch = patches[h,w]
-            r = (patch[0, 0][0])
-            g = (patch[0, 0][1])
-            b = (patch[0, 0][2])
+            delimeter = " "
+            # r = (patch[0, 0][0])
+            # g = (patch[0, 0][1])
+            # b = (patch[0, 0][2])
+            r, g, b = patch[:, :, 0].mean(), patch[:, :, 1].mean(), patch[:, :, 2].mean()
             lumi = luminance(patch)
             character = brightness_matching(lumi)
+            #character = random.choice(ascii_vals)
             row_chars.append({
                 'char': character,
                 'color': f'rgb({r},{g},{b})'
@@ -119,9 +122,10 @@ def rgb_ascii(image_bytes):
 
         for w in range(w_patches):
             patch = patches[h,w]
-            r = (patch[0, 0][0])/255
-            g = (patch[0, 0][1])/255
-            b = (patch[0, 0][2])/255
+            # r = (patch[0, 0][0])/255
+            # g = (patch[0, 0][1])/255
+            # b = (patch[0, 0][2])/255
+            r, g, b = patch[:, :, 0].mean(), patch[:, :, 1].mean(), patch[:, :, 2].mean()
 
             red_char = col_matching(r)
             green_char = col_matching(g)
@@ -150,5 +154,5 @@ def create_ascii(image_bytes, style):
     return result
 
 if __name__ == "__main__":
-    print(create_ascii())
+    print(create_ascii(imagePath, style))
 
