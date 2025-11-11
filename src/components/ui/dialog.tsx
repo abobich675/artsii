@@ -137,7 +137,7 @@ export {
   DialogFooter,
   DialogHeader,
   DialogOverlay,
-  DialogPortal,cc
+  DialogPortal,
   DialogTitle,
   DialogTrigger,
 }
