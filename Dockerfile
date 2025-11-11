@@ -3,9 +3,13 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
-COPY . .
-ENV PRISMA_CLIENT_ENGINE_TYPE=library
+
+# Schema
+COPY prisma ./prisma
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy?schema=public"
 RUN npx prisma generate
+
+COPY . .
 RUN npm run build
 
 # Stage 2: Production with Python
