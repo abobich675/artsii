@@ -18,6 +18,7 @@ type FormattedAsciiProps = {
 };
 
 const FormattedAscii = ({ style, children}: FormattedAsciiProps) => {
+  console.log(children)
   let formatted: React.ReactNode = "";
   switch (style) {
     case "bw":

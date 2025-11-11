@@ -1,24 +1,35 @@
 'use server'
+import { PrismaClient } from "@prisma/client"
 import fs from "fs";
 
-export async function generateImage(prompt: string, style: string): Promise<string> {
-    try {
-        const response = await fetch('http://127.0.0.1:6969/api/generate-image', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: prompt, style: style })
-        });
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        return data.result;
-    } catch (error) {
-        console.error('Failed to generate image:', error);
-        return ""
-    }
+const prisma = new PrismaClient()
+
+export async function generateImage(prompt: string, style: string): Promise<{
+  ascii: string,
+  style: string,
+  path: string
+} | false> {
+  try {
+      const response = await fetch('http://127.0.0.1:6969/api/generate-image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: prompt, style: style })
+      });
+      
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return {
+          ascii: data.ascii,
+          style: data.style,
+          path: data.path
+      };
+  } catch (error) {
+      console.error('Failed to generate image:', error);
+      return false
+  }
 }
 
 type ColoredChar = {
@@ -57,4 +68,58 @@ export async function addToGallery(ascii: string | ColoredChar[][], style: strin
   console.log(`Added to gallery.json`);
 
   return true
+}
+
+export async function addToDatabase(image: string, style: string, title: string = "", prompt: string = "", user: string = "", includeInGallery: boolean = false) {
+
+  const res = await prisma.post.create({
+    data: {
+      image: image,
+      style: style,
+      title: title,
+      prompt: prompt,
+      user: user,
+      gallery: includeInGallery
+    }
+  })
+
+  return !!res
+}
+
+export async function getGalleryContents() {
+  const res = await prisma.post.findMany({
+    where: {
+      gallery: true
+    }
+  })
+
+  if (!res || res.length === 0) {
+    return false
+  }
+
+  return res.reverse()
+}
+
+export async function getDatabaseAscii(path: string, style: string) {
+  try {
+    const response = await fetch('http://127.0.0.1:6969/api/get-database-ascii', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: path, style: style })
+    });
+    
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return {
+        ascii: data.ascii,
+        style: data.style,
+        path: data.path
+    };
+  } catch (error) {
+      console.error('Failed to generate image:', error);
+      return false
+  }
 }

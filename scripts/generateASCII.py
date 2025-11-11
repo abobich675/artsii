@@ -5,20 +5,27 @@ from toASCII import create_ascii
 from dotenv import load_dotenv
 import os
 import json
+from storeImg import upload_blob_from_file, upload_blob_from_bytes
+from google.cloud import storage
 
 load_dotenv()
+# AI
 api_key = os.getenv('GOOGLE_API_KEY')
 client = genai.Client(api_key = api_key)
 MODELS = ["imagen-4.0-fast-generate-001", "imagen-3.0-generate-002", "imagen-4.0-generate-001", "imagen-4.0-ultra-generate-001"]
+
+# Storage
+storage_client = storage.Client()
     
-def run(prompt, style):
+def run_generation(prompt, style):
     global api_key
+    path = None
     if os.getenv('USE_AI') == "true":
-        imagePath = generate_image(prompt)
-    if os.getenv('USE_AI') != "true" or not imagePath:
-        imagePath = find_image()
-    result = generate_ascii(imagePath, style)
-    return result
+        image_bytes, path = generate_image(prompt)
+    if os.getenv('USE_AI') != "true" or not image_bytes:
+        image_bytes = find_image()
+    result = create_ascii(image_bytes, style)
+    return (result, path)
 
 def generate_image(prompt: str):
     for model in MODELS:
@@ -40,13 +47,18 @@ def generate_image(prompt: str):
     
     if not success:
         return False
-        
     
-    path = f"generated_images/{random.randint(0, sys.maxsize)}.png"
+    # path = f"generated_images/{random.randint(0, sys.maxsize)}.png"
+    path = f"{random.randint(0, sys.maxsize)}.png"
     for generated_image in response.generated_images:
-        generated_image.image.save(path)
+        image_bytes = generated_image.image.image_bytes
+        upload_blob_from_bytes("ascii-gemini-images", image_bytes, path)
 
-    return path
+        # upload_blob_from_bytes("ascii-gemini-images", image_bytes, path.split("/")[1])
+    #     generated_image.image.save(path)
+    # upload_blob_from_file("ascii-gemini-images", path, path.split("/")[1])
+    
+    return (image_bytes, path)
 
 def find_image():
     folder = "generated_images"
@@ -56,13 +68,13 @@ def find_image():
             images.append(os.path.join(folder, filename))
     if images == []:
         return None  # No PNG found
-    return images[random.randint(0, sys.maxsize) % len(images)]
+    
+    selected_image = images[random.randint(0, sys.maxsize) % len(images)]
+    with open(selected_image, 'rb') as f:
+        return f.read()
+    
 
-def generate_ascii(imagePath, style):
-    result = create_ascii(imagePath, style)
-    # add_to_gallery(imagePath, result, style)
-    return result
-
+# NO LONGER USED
 def add_to_gallery(imagePath, ascii, style):
     if os.path.exists("public/gallery.json"):
         with open("public/gallery.json", "r", encoding="utf-8") as f:
@@ -80,3 +92,14 @@ def add_to_gallery(imagePath, ascii, style):
         
     with open("public/gallery.json", "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
+        
+def run_fetch(path, style):
+    bucket = storage_client.bucket("ascii-gemini-images")
+    blob = bucket.blob(path)
+    
+    image_bytes = blob.download_as_bytes()
+    result = create_ascii(image_bytes, style)
+    return result
+
+def run_upload(image_bytes, style):
+    return create_ascii(image_bytes, style)

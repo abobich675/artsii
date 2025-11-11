@@ -1,14 +1,24 @@
 import numpy as np
 from PIL import Image
+import io
 import math
 import random
 
-p_size = 4
-ascii_vals = """█▓▒@W#B8%&M$XOQZ0QLCJUYXohqnmczrjft|)1?/!-;:,^`'·░"""
+# p_size = 3
+p_size_scalar = 340
+ascii_vals = """▓▒░B@%8WM#*ZQOLCJUXohqmzrjft|)1]?+-i!l:"' """
+
+def get_p_size(h, w):
+    
+    if w >= h:
+        return math.ceil(w / p_size_scalar)
+    else:
+        return math.ceil(h / p_size_scalar)
 
 def create_patches(img_array):
-    vert_p_size = math.floor(p_size * 2)
     h, w, c = img_array.shape
+    p_size = get_p_size(h, w)
+    vert_p_size = math.floor(p_size * 2)
     h_patches = h // vert_p_size
     w_patches = w // p_size
 
@@ -46,9 +56,9 @@ def brightness_matching(lum):
     return symbol
 
 
-def ascii_output(imagePath):
-    with Image.open(imagePath) as im:
-        test = np.array(im)
+def bw_ascii(image_bytes):
+    image = Image.open(io.BytesIO(image_bytes))
+    test = np.array(image)
     patches = create_patches(test)
     h_patches, w_patches = patches.shape[:2]
 
@@ -62,14 +72,9 @@ def ascii_output(imagePath):
         output += '\n'
     return output
 
-def col_matching(color):
-    saturation = int(color * (len(ascii_vals) - 1))
-    symbol = ascii_vals[saturation]
-    return symbol
-
-def colored_ascii(imagePath):
-    with Image.open(imagePath) as im:
-        test = np.array(im)
+def colored_ascii(image_bytes):
+    image = Image.open(io.BytesIO(image_bytes))
+    test = np.array(image)
     patches = create_patches(test)
     h_patches, w_patches = patches.shape[:2]
 
@@ -94,9 +99,15 @@ def colored_ascii(imagePath):
         ascii_chars.append(row_chars)
     return ascii_chars
 
-def multilayered(imagePath):
-    with Image.open(imagePath) as im:
-        test = np.array(im)
+def col_matching(color):
+    saturation = color * len(ascii_vals) - 1
+    saturation = int(saturation)
+    symbol = ascii_vals[saturation]
+    return symbol
+
+def rgb_ascii(image_bytes):
+    image = Image.open(io.BytesIO(image_bytes))
+    test = np.array(image)
     patches = create_patches(test)
     h_patches, w_patches = patches.shape[:2]
 
@@ -129,13 +140,13 @@ def multilayered(imagePath):
 
     return red_grid + green_grid + blue_grid
 
-def create_ascii(imagePath, style):
+def create_ascii(image_bytes, style):
     if style == "bw":
-        result = ascii_output(imagePath)
+        result = bw_ascii(image_bytes)
     elif style == "color":
-        result = colored_ascii(imagePath)
+        result = colored_ascii(image_bytes)
     elif style == "rgb":
-        result = multilayered(imagePath)
+        result = rgb_ascii(image_bytes)
     else:
         result = ""
         print("Invalid Style!")
