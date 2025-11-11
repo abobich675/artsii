@@ -97,7 +97,7 @@ export async function getGalleryContents() {
     return false
   }
 
-  return res
+  return res.reverse()
 }
 
 export async function getDatabaseAscii(path: string, style: string) {

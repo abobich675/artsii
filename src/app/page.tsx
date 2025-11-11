@@ -133,7 +133,7 @@ export default function Home() {
                 <div className="w-100">
                   <div className="flex justify-center gap-5 my-5 items-center text-xs">
                     Prompt
-                    <Switch onCheckedChange={(checked) => checked ? setInputType("upload") : setInputType("prompt")} />
+                    <Switch checked={inputType === "upload"} onCheckedChange={(checked) => checked ? setInputType("upload") : setInputType("prompt")} />
                     Upload
                   </div>
                   { inputType == "prompt" &&
@@ -143,13 +143,15 @@ export default function Home() {
                     <Input className="flex-3" type="file" accept="image/*" onChange={((e) => handleFileChange(e))} />
                   }
                   <div className="flex items-center justify-between pt-2">
-                    <Label className="mr-2" htmlFor="size">Size:</Label>
+
+                    <div className="flex-1" />
+                    {/* <Label className="mr-2" htmlFor="size">Size:</Label>
                     <select id="size" name="size" value={size} onChange={(e) => setSize(e.target.value)}
                       className="border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive">
                       <option value="large">Large</option>
                       <option value="normal">Normal</option>
                       <option value="small">Small</option>
-                    </select>
+                    </select> */}
                     <Label className="ml-10 mr-2" htmlFor="style">Style:</Label>
                     <select id="style" name="style" value={style} onChange={(e) => setStyle(e.target.value)}
                       className="border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive">
