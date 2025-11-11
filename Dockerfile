@@ -4,6 +4,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
+ENV PRISMA_CLIENT_ENGINE_TYPE=library
+RUN npx prisma generate
 RUN npm run build
 
 # Stage 2: Production with Python
