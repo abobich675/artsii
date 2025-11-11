@@ -26,7 +26,6 @@ type AsciiAndType = {
 }
 
 export default function Home() {
-  
   const [asciiList, setASCIIList] = useState<AsciiAndType[]>([])
   const [prompt, setPrompt] = useState("")
   const [file, setFile] = useState<File>()
