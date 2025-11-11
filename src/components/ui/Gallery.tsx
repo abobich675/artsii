@@ -3,8 +3,15 @@ import FormattedAscii from './FormattedAscii';
 import { Skeleton } from './skeleton';
 import { getDatabaseAscii, getGalleryContents } from '@/app/actions';
 
+interface AsciiItem {
+  ascii: any;
+  style: string;
+  path: string;
+
+}
+
 export default function Gallery() {
-  const [data, setData] = useState<any>([]);
+  const [data, setData] = useState<AsciiItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   // const [visibleCount, setVisibleCount] = useState(0);
 
@@ -16,6 +23,7 @@ export default function Gallery() {
       const asciiResults = [];
       for (const e of galleryContents) {
         const asciiData = await getDatabaseAscii(e.image, e.style);
+        if (!asciiData) continue
         asciiResults.push({ ...e, ...asciiData });
         setData(asciiResults);
         await new Promise(r => setTimeout(r, 50));

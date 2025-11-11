@@ -70,26 +70,26 @@ export default function Home() {
   function generate() {
     const currPrompt = prompt
     const currFile = file
-    if (inputType == "prompt" && !currPrompt) {
+    if (inputType === "prompt" && !currPrompt) {
       toast.error("You must enter a prompt")
       return
     }
 
-    if (inputType == "upload" && !currFile) {
+    if (inputType === "upload" && !currFile) {
       toast.error("You must upload a file")
       return
     }
     
     const fetchGeneration = async () => {
       setLoading(true)
-      if (inputType == "prompt") {
+      if (inputType === "prompt") {
         const res = await generateImage(currPrompt, style)
         if (!res) {
           toast.error("Failed to generate image")
         } else {
           setASCIIList([...asciiList, res])
         }
-      } else if (inputType == "upload") {
+      } else if (inputType === "upload") {
 
         if (!currFile) {
           toast.error("You need to upload a file to do that!")
@@ -135,10 +135,10 @@ export default function Home() {
                     <Switch checked={inputType === "upload"} onCheckedChange={(checked) => checked ? setInputType("upload") : setInputType("prompt")} />
                     Upload
                   </div>
-                  { inputType == "prompt" &&
+                  { inputType === "prompt" &&
                     <Input className="flex-4" placeholder="ASCII Image Prompt..." value={prompt} onChange={(e) => setPrompt(e.target.value || "")}/>
                   }
-                  { inputType == "upload" &&
+                  { inputType === "upload" &&
                     <Input className="flex-3" type="file" accept="image/*" onChange={((e) => handleFileChange(e))} />
                   }
                   <div className="flex items-center justify-between pt-2">
