@@ -5,4 +5,4 @@ google-auth
 google-genai
 numpy
 pillow
-google-cloud
+google-cloud-storage
